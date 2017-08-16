@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw.css" />
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
-  <link rel="stylesheet" type="text/css" href="css/main.css" /> 
+  <link rel="stylesheet" type="text/css" href="css/style.css" /> 
   <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
   <!-- <link rel="stylesheet" type="text/css" href="css/leaflet.draw.css" /> -->
 
@@ -32,22 +32,22 @@
 
   <div id="form">
     <div id="text"
-    text=<p>Click on the map to find the closest crime to that location,</p>
-    <p>or, click "start editing" to add additional crime to the map.</p>
+    text=<p>Click on the map to find the closest crimes to that location (since 2012),</p>
+    <p>or, click "START EDIT" to report additional crime information to the map.</p>
     </div>
     <form action="">
       <!-- <input type="button" onclick="showNone()" value="Reset Map"> -->
      <!--  LATER ideally i'd like to style these buttons better -->
       <input type="button" onclick="startEdits()" value="START EDIT">
       <input type="button" onclick="stopEdits()" value="STOP EDIT">
-      <div id="dialog" title="Point Information">
+      <div id="dialog" title="Before you leave:">
         <form>
           <fieldset>
             <label for="username"> </label>
             <input type="text" name="username" id="username" placeholder="Name, please" class="text ui-widget-content ui-corner-all">
             <label for="description"> </label>
             <input type="text" name="description" id="description" placeholder="What's here?" class="text ui-widget-content ui-corner-all">
-            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            <input type="submit" tabindex="-1" style="position:absolute; top:-900px">
           </fieldset>
         </form>
       </div>
@@ -58,7 +58,7 @@
     <ul>
       <li id="abc" class="selected">All</li>
       <li id="wifi">Wifi</li>  
-       <li id="crime">Crime</li> <!-- scenic points to crime... -->
+      <li id="crime">Crime</li> <!-- scenic points to crime... -->
       <li id="bikeroutes">Bike Routes</li> <!-- this didn't work out, moving on... -->
       <li id="athleticfacilities">Athletic Facilities</li><!-- this didn't work out, moving on... -->
     </ul>
@@ -67,7 +67,7 @@
   <div id='text2' class='map'>
     
   <script type="infowindow/html" id="infowindow_template">
-                  <div class="cartodb-popup">
+      <div class="cartodb-popup">
            <a href="#close" class="cartodb-popup-close-button close">x</a>
 
                <div class="cartodb-popup-content-wrapper">
@@ -78,17 +78,15 @@
                <div class="cartodb-popup-tip-container"></div>
             </div>
           </script>
+          </div>
+
 
   <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
   <script src="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
-  <!-- <script src="js/leaflet.draw.js"></script> -->
   <script src="js/main2.js"></script>
-
-
-
 
  </body>
 </html>

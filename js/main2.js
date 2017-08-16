@@ -84,20 +84,20 @@ cartodb.createLayer(map, {
 }).addTo(map)
 .done(function(layer){
 wifi = layer.getSubLayer(0); // declare a layer0 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(0), ['name', 'elevation'])
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(0), ['type', 'location'])
 console.log(wifi); // show in the console layer0
 
 crime = layer.getSubLayer(1); // declare a layer1 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), ['recareanam', 'parentacti', 'openstatus', 'latitude', 'longitude'])
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), ['pd_desc', 'cmplnt_fr_'])
 console.log(crime); // show in the console layer1
 
 bikeroutes = layer.getSubLayer(2); // declare a layer1 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(2), ['name', 'miles', 'from_', 'to_'])
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(2), ['tostreet', 'fromstreet', 'comments'])
 console.log(bikeroutes); // show in the console layer1
 
 athleticfacilities = layer.getSubLayer(3); // declare a layer1 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(3), ['facility', 'type', 'fac_open'])
-console.log(athleticfacilities); // show in the console layer1
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(3), ['name', 'accessible'])
+console.log(athleticfacilities); // show in the console 
 
 var $options = $('#layer_selector li');
 $options.click(function(e) {
@@ -105,8 +105,6 @@ $options.click(function(e) {
   var $li = $(e.target);
   var legend = $li.attr('id');
   if(selectedLayer != layer ){
-    // definitely more elegant ways to do this, but went for
-    // ease of understanding
     if (legend == 'wifi'){
       layer.getSubLayer(0).show(); // wifi
       layer.getSubLayer(1).hide(); // crime
@@ -142,7 +140,7 @@ $options.click(function(e) {
 
 });
 
-
+//attempt at creating a crime search
 $('#searchButton').click(function(){
   input = $( "#ad").val();
   var sql = new cartodb.SQL({ user: 'nrobson' });
@@ -179,12 +177,12 @@ function locationNotFound(e){
     alert(e.message);
 };
 
-// Function will find and load the five nearest coffee shops to a user location
+// Function will find and load the five nearest crimes to the user location
 function closestcrime(){
-  // Set SQL Query that will return five closest coffee shops
+  // Set SQL Query that will return five nearest crimes
   var sqlQueryClosest = "SELECT * FROM crime ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint("+myLocation.lng+","+myLocation.lat+"), 4326) LIMIT 5";
 
-  // remove CoffeeShopLocations if on map
+  // remove crimes if they are on the map already
   if(map.hasLayer(crime)){
     map.removeLayer(crime);
   };
@@ -216,7 +214,7 @@ var cartoDBUserName2 = "nrobson";
 
 
 // Write SQL Selection Query to be Used on CARTO Table
-// Name of sample table is 'data_collector', but my tables have different names
+//Select data from the empty table in Carto
 var sqlQueryAddData = "SELECT * FROM data_collector";
 
 var geojsonMarkerOptions = {
@@ -280,9 +278,6 @@ var drawControl = new L.Control.Draw({
 map.on(L.Draw.Event.CREATED, function (e) {
   var type = e.layerType
   var layer = e.layer;
-
-  // Do whatever else you need to. (save to db, add to map etc)
-
   drawnItems.addLayer(layer);
 });
 
@@ -412,5 +407,3 @@ map.on('draw:created', function (e) {
 
 var selectedLayer;
   // create layer selector
-  // function createSelector(layers) {
-  //   var sql = new cartodb.SQL({ user: 'documentation' });
