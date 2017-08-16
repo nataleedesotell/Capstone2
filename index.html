@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CENTRAL PARK</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+
+  <style>
+
+  html, body, #map {
+    height: 100%;
+    padding: 1%;
+    margin: 0;
+  }
+
+  </style>
+
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw.css" />
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+  <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="css/leaflet.draw.css" /> -->
+
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id='Title'>
+  CENTRAL PARK
+  </div>
+
+
+  <div id="form">
+    <div id="text"
+    text=<p>Click on the map to find the closest recreation activities to that location,</p>
+    <p>or, click "start editing" to add your own recreation location to the map</p>
+    </div>
+    <form action="">
+      <!-- <input type="button" onclick="showNone()" value="Reset Map"> -->
+     <!--  LATER ideally i'd like to style these buttons better -->
+      <input type="button" onclick="startEdits()" value="START EDIT">
+      <input type="button" onclick="stopEdits()" value="STOP EDIT">
+      <div id="dialog" title="Point Information">
+        <form>
+          <fieldset>
+            <label for="username">Name, please</label>
+            <input type="text" name="username" id="username" placeholder="Enter your Name" class="text ui-widget-content ui-corner-all">
+            <label for="description">What's here?</label>
+            <input type="text" name="description" id="description" placeholder="Description for this point" class="text ui-widget-content ui-corner-all">
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+          </fieldset>
+        </form>
+      </div>
+    </form>
+  </div>
+
+  <div id="layer_selector" class="cartodb-infobox">
+    <ul>
+      <li id="abc" class="selected">All</li>
+      <li id="wifi">Wifi</li>  
+       <li id="crime">Crime</li> <!-- scenic points to crime... -->
+      <li id="bikeroutes">Bike Routes</li> <!-- this didn't work out, moving on... -->
+      <li id="athleticfacilities">Athletic Facilities</li><!-- this didn't work out, moving on... -->
+    </ul>
+  </div>
+
+  <div id='text2' class='map'>
+    
+  <script type="infowindow/html" id="infowindow_template">
+                  <div class="cartodb-popup">
+           <a href="#close" class="cartodb-popup-close-button close">x</a>
+
+               <div class="cartodb-popup-content-wrapper">
+                 <div class="cartodb-popup-content">
+                   // fields to show
+                 </div>
+               </div>
+               <div class="cartodb-popup-tip-container"></div>
+            </div>
+          </script>
+
+  
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+  <!-- <script src="js/leaflet.draw.js"></script> -->
+  <script src="js/main2.js"></script>
+
+
+
+
+ </body>
+</html>

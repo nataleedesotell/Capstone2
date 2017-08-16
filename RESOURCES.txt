@@ -1,0 +1,8 @@
+Carto API Key for nrobson wisc carto account is 0e40f64a24a0ccebb9d30c8582060337efc27a0b
+
+How to get into my wisc CARTO acc in case I forget: https://www.geoalliance.wisc.edu/carto/
+
+All of Mike Foster's related tutorials: http://duspviz.mit.edu/tutorials/
+Mike Foster's github with sample code: https://github.com/mjfoster83/web-map-workshop
+
+Andrew W. Hill's CartoDB.js Layer Selector: http://bl.ocks.org/andrewxhill/10506396

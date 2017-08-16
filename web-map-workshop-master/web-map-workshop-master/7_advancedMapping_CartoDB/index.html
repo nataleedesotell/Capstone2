@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CENTRAL PARK</title>
+     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'></script>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="css/leaflet.draw.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <h1>CENTRAL PARK</h1>
+      </div>
+      <div id="mapid"></div>
+      <div id="controls">
+        <p>Click points for more information, or add your own.</br></p>
+        <input type="button" onclick="startEdits()" value="START EDIT">
+        <input type="button" onclick="stopEdits()" value="STOP EDIT"><br>
+        <div id="credits"><p>GIS and Web Map Programming Capstone. 2017, Natalee Desotell</p>
+        <p>Mike Foster Tutorial, 2017</p></div>
+      </div>
+    </div>
+
+<!--
+    <div id="dialog" title="Point Information">     
+      <form>
+        <fieldset style="border: none;">
+          <ul style="list-style-type: none; padding-left: 0px">
+            <li><label for="username">Your Name</label></li>
+            <li><input type="text" name="username" id="username" placeholder="Enter your name" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="description">About this Point</label></li>
+            <li><input type="text" name="description" id="description" placeholder="Description for this point" class="text ui-widget-content ui-corner-all"></li>
+          </ul>
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+      </form>
+    </div>
+-->
+
+
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet.draw.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+
+   // Add Tile Layer basemap
+mapboxgl.accessToken = 'pk.eyJ1IjoibmF0YWxlZWRlc290ZWxsIiwiYSI6ImNpa29uMGNxNTB4d3Z0aWo3bWdubHJ4bGMifQ.1kpv2xbqsnS0sJ9ew0bJIA';
+
+   // Create Leaflet map object
+var map = new mapboxgl.Map({
+    container: 'mapid',
+    minZoom: 12,
+    maxZoom: 16,
+    //use a basic style because I don't like clutter!
+    style: 'mapbox://styles/mapbox/basic-v9',
+    //zoom to an appropriate level for CP
+    zoom: 14,
+    //CP's coordinates, where my heart is <3 
+    center: [-73.9654, 40.7829]
+});
+    // Your script will go here!
+   
+    </script>
+  </body>
+</html>
