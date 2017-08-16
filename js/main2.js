@@ -1,6 +1,6 @@
 // function main() {
 var map = L.map('map', {
-    center: L.latLng(40.785091, -73.968285),
+    center: L.latLng(40.779, -73.968),
     maxZoom: 17,
     minZoom: 13,
     //zoom on load
