@@ -13,23 +13,21 @@ var basemap = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 
 basemap.addTo(map);
 
+//POINTS
+var cartoCSSwifi = "#layer { "+
+    "marker-width: 10;" +
+    "marker-fill: #594316;" +
+    "marker-fill-opacity: 0.9;" +
+    "marker-allow-overlap: true;" +
+    "marker-line-width: 1;" +
+    "marker-line-color: #FFF;" +
+    "marker-line-opacity: 1;" +
+  "}"
 
-// here is the styling for all the layers, each with its own variable
-
-//this is NOT styling wifi... code below is
-var cartoCSSwifi = "#layer {" +
-  "marker-width: 7;" +
-  "marker-fill: #red;" +
-  "marker-fill-opacity: 0.9;" +
-  "marker-allow-overlap: true;" +
-  "marker-line-width: 1;" +
-  "marker-line-color: #FFF;" +
-  "marker-line-opacity: 1;" +
-"}"
-
+//POINTS
 var cartoCSScrime = "#layer {" +
-  "marker-width: 7;" +
-  "marker-fill: red;" +
+  "marker-width: 10;" +
+  "marker-fill: #FFB927;" +
   "marker-fill-opacity: 0.9;" +
   "marker-allow-overlap: true;" +
   "marker-line-width: 1;" +
@@ -37,25 +35,23 @@ var cartoCSScrime = "#layer {" +
   "marker-line-opacity: 1;" +
 "}"
 
-
-//these are lines
+//LINES
 var cartoCSSbikeroutes = "#layer {" +
   "line-width: 2;" +
   "line-color: #d34dee;" +
   "line-opacity: 1;" +
 "}"
 
-//these are polygons
-//I can use these for styling athletic facilities
+//POLYGONS
 var cartoCSSathleticfacilities = "#layer {" +
-  "polygon-fill: red;" +
-  "polygon-opacity: 1;" +
+  "polygon-fill: #d35b7b;" +
+  "polygon-opacity: 0.5;" +
   "line-width: 1;" +
   "line-color: #FFF;" +
   "line-opacity: 0.5;" +
 "}"
 
-//create variables for each layer
+
 var wifi, crime, bikeroutes, athleticfacilities
 
 // add cartodb layer with one layer
@@ -66,18 +62,19 @@ cartodb.createLayer(map, {
   { // first sublayer is the one that is painted at the bottom
       sql: "SELECT * FROM wifi", // Required
       cartocss: cartoCSSwifi, // Required
+
    },
-   { // second sublayer is painted above the previous one
-           sql: "SELECT * FROM crime", // Required
-           cartocss: cartoCSScrime, // Required
+   { // first sublayer is the one that is painted at the bottom
+       sql: "SELECT * FROM crime", // Required
+       cartocss: cartoCSScrime, // Required
 
     },
-    { // third sublayer painted over 1 and 2
+    { // first sublayer is the one that is painted at the bottom
         sql: "SELECT * FROM bikeroutes", // Required
         cartocss: cartoCSSbikeroutes, // Required
 
      },
-      { //fourth sublayer painted over 1, 2, and 3
+      { // first sublayer is the one that is painted at the bottom
           sql: "SELECT * FROM athleticfacilities", // Required
           cartocss: cartoCSSathleticfacilities, // Required
 
@@ -86,189 +83,176 @@ cartodb.createLayer(map, {
   ]
 }).addTo(map)
 .done(function(layer){
-var wifi = layer.getSubLayer(0); // declare a layer0 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(0), ['type', 'location'])
+wifi = layer.getSubLayer(0); // declare a layer0 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(0), ['name', 'elevation'])
 console.log(wifi); // show in the console layer0
 
-var crime = layer.getSubLayer(1); // declare a layer1 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), ['pd_desc', 'law_cat_cd'])
+crime = layer.getSubLayer(1); // declare a layer1 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), ['recareanam', 'parentacti', 'openstatus', 'latitude', 'longitude'])
 console.log(crime); // show in the console layer1
 
-var bikeroutes = layer.getSubLayer(2); // declare a layer1 variable
+bikeroutes = layer.getSubLayer(2); // declare a layer1 variable
 cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(2), ['name', 'miles', 'from_', 'to_'])
-console.log(bikeroutes); // show in the console layer2
+console.log(bikeroutes); // show in the console layer1
 
-var athleticfacilities = layer.getSubLayer(3); // declare a layer1 variable
+athleticfacilities = layer.getSubLayer(3); // declare a layer1 variable
 cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(3), ['facility', 'type', 'fac_open'])
-console.log(athleticfacilities); // show in the console layer3
-
+console.log(athleticfacilities); // show in the console layer1
 
 var $options = $('#layer_selector li');
 $options.click(function(e) {
-  //this handles the click (event.target) for the list (legend)
+  // get the area of the selected layer
   var $li = $(e.target);
   var legend = $li.attr('id');
-  var selectedLayer;
-      // create layer selector
-      function createSelector(layers) {
-        var sql = new cartodb.SQL({ user: 'nrobson' });
- 
-        var $options = $('#layer_selector li');
-        $options.click(function(e) {
-          // get the area of the selected layer
-          var $li = $(e.target);
-          var layer = $li.attr('id');
-          
   if(selectedLayer != layer ){
-    // if wifi is clicked, then show layer 0
+    // definitely more elegant ways to do this, but went for
+    // ease of understanding
     if (legend == 'wifi'){
       layer.getSubLayer(0).show(); // wifi
       layer.getSubLayer(1).hide(); // crime
-      layer.getSubLayer(2).hide(); //bike routes
-      layer.getSubLayer(3).hide(); //athletic facilities
-    //if crime is clicked, show layer 1 (crime)
+      layer.getSubLayer(2).hide(); //bikeroutes
+      layer.getSubLayer(3).hide();
     }
     else if (legend == 'crime') {
       layer.getSubLayer(0).hide(); // wifi
       layer.getSubLayer(1).show(); // crime
-      layer.getSubLayer(2).hide(); // bike routes
-      layer.getSubLayer(3).hide(); //athletic facilities
+      layer.getSubLayer(2).hide(); //bikeroutes
+      layer.getSubLayer(3).hide();
     }
     else if (legend == 'bikeroutes') {
-      layer.getSubLayer(0).hide(); //wifi
-      layer.getSubLayer(1).hide(); //crime
-      layer.getSubLayer(2).show(); //bike routes
-      layer.getSubLayer(3).hide(); //athletic facilities
-
+      layer.getSubLayer(0).hide(); // wifi
+      layer.getSubLayer(1).hide(); // crime
+      layer.getSubLayer(2).show();//bikeroutes
+      layer.getSubLayer(3).hide();
     }
     else if (legend == 'athleticfacilities') {
-      layer.getSubLayer(0).hide(); //wifi
-      layer.getSubLayer(1).hide(); //crime
-      layer.getSubLayer(2).hide(); //bike routes
-      layer.getSubLayer(3).hide(); //athletic facilities
+      layer.getSubLayer(0).hide(); // wifi
+      layer.getSubLayer(1).hide(); // crime
+      layer.getSubLayer(2).hide();//bikeroutes
+      layer.getSubLayer(3).show();
     }
     else {
-      //show all layers if none are selected
-      layer.getSubLayer(0).show(); //wifi
-      layer.getSubLayer(1).show(); //crime
-      layer.getSubLayer(2).show(); //bike routes
-      layer.getSubLayer(3).show(); //athletic facilities
+      layer.getSubLayer(0).show(); // wifi
+      layer.getSubLayer(1).show(); // crime
+      layer.getSubLayer(2).show();//bikeroutes
+      layer.getSubLayer(3).show();
     }
   }
 });
 
-}
+});
 
 
-// $('#searchButton').click(function(){
-//   input = $( "#ad").val();
-//   var sql = new cartodb.SQL({ user: 'nrobson' });
-//   sql.getBounds("SELECT * FROM recreationactivities '" + input + "'").done(function(bounds) {
-//      map.fitBounds(bounds)
-//      });
-//    });
+$('#searchButton').click(function(){
+  input = $( "#ad").val();
+  var sql = new cartodb.SQL({ user: 'nrobson' });
+  sql.getBounds("SELECT * FROM crime '" + input + "'").done(function(bounds) {
+     map.fitBounds(bounds)
+     });
+   });
 
-// var recreationLocations = null;
-// var sqlQuery = "SELECT * FROM recreationactivities";
-// var sqlQueryHiking = "SELECT * FROM recreationactivities WHERE parentacti='Hiking'"
-// var cartoDBUserName = "nrobson";
-// // Function to add all coffee shops
+var crimeLocations = null;
+var sqlQuery = "SELECT * FROM crime";
+//select something specific from crime
+var sqlQueryHiking = "SELECT * FROM crime WHERE law_cat_cd='FELONY'"
+var cartoDBUserName = "nrobson";
 
-// // Set Global Variable that will hold your location
-// var myLocation = null;
+// Set Global Variable that will hold your location
+var myLocation = null;
 
-// // Set Global Variable that will hold the marker that goes at our location when found
-// var locationMarker = null;
+// Set Global Variable that will hold the marker that goes at our location when found
+var locationMarker = null;
 
-// // Listen for a click event on the Map element
-// map.on('click', locationFound);
+// Listen for a click event on the Map element
+map.on('click', locationFound);
 
-// // Function that will run when the location of the user is found
-// function locationFound(e){
-//     myLocation = e.latlng;
-//     closestRecreation();
-//     locationMarker = L.marker(e.latlng);
-//     map.addLayer(locationMarker);
-// };
+// Function that will run when the location of the user is found
+function locationFound(e){
+    myLocation = e.latlng;
+    closestcrime();
+    locationMarker = L.marker(e.latlng);
+    map.addLayer(locationMarker);
+};
 
-// // Function that will run if the location of the user is not found
-// function locationNotFound(e){
-//     alert(e.message);
-// };
+// Function that will run if the location of the user is not found
+function locationNotFound(e){
+    alert(e.message);
+};
 
-// // Function will find and load the five nearest coffee shops to a user location
-// function closestRecreation(){
-//   // Set SQL Query that will return five closest coffee shops
-//   var sqlQueryClosest = "SELECT * FROM recreationactivities ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint("+myLocation.lng+","+myLocation.lat+"), 4326) LIMIT 5";
+// Function will find and load the five nearest coffee shops to a user location
+function closestcrime(){
+  // Set SQL Query that will return five closest coffee shops
+  var sqlQueryClosest = "SELECT * FROM crime ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint("+myLocation.lng+","+myLocation.lat+"), 4326) LIMIT 5";
 
-//   // remove CoffeeShopLocations if on map
-//   if(map.hasLayer(recreationLocations)){
-//     map.removeLayer(recreationLocations);
-//   };
+  // remove CoffeeShopLocations if on map
+  if(map.hasLayer(crime)){
+    map.removeLayer(crime);
+  };
 
-//   // remove locationMarker if on map
-//   if(map.hasLayer(locationMarker)){
-//     map.removeLayer(locationMarker);
-//   };
+  // remove locationMarker if on map
+  if(map.hasLayer(locationMarker)){
+    map.removeLayer(locationMarker);
+  };
 
-//   // Get GeoJSON of five closest points to the user
-//   $.getJSON("https://"+cartoDBUserName+".carto.com/api/v2/sql?format=GeoJSON&q="+sqlQueryClosest, function(data) {
-//     recreationLocations = L.geoJson(data,{
-//       onEachFeature: function (feature, layer) {
-//         layer.bindPopup('' + feature.properties.recareanam + '' + feature.properties.parentacti + '');
-//         layer.cartodb_id=feature.properties.cartodb_id;
-//       }
-//     }).addTo(map);
-//   });
-// };
+  // Get GeoJSON of five closest points to the user
+  $.getJSON("https://"+cartoDBUserName+".carto.com/api/v2/sql?format=GeoJSON&q="+sqlQueryClosest, function(data) {
+    crimeLocations = L.geoJson(data,{
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup('' + feature.properties.law_cat_cd + '' + feature.properties.law_cat_cd + '');
+        layer.cartodb_id=feature.properties.cartodb_id;
+      }
+    }).addTo(map);
+  });
+};
 
-// // Add Data from CARTO using the SQL API
-// // Declare Variables
-// // Create Global Variable to hold CARTO points
-// var cartoDBPoints = null;
-// var cartoDBLines = null;
-// var cartoDBPolygons = null;
-// var cartoDBUserName2 = "nrobson";
-// // Write SQL Selection Query to be Used on CARTO Table
-// // Name of table is 'data_collector'
-// var sqlQueryAddData = "SELECT * FROM wifi";
+// Add Data from CARTO using the SQL API
+// Declare Variables
+// Create Global Variable to hold CARTO points
+var cartoDBPoints = null;
+var cartoDBLines = null;
+var cartoDBPolygons = null;
+var cartoDBUserName2 = "nrobson";
 
-// var geojsonMarkerOptions = {
-//         radius: 8,
-//         fillColor: "#ff7800",
-//         color: "#000",
-//         weight: 1,
-//         opacity: 1,
-//         fillOpacity: 0.8
-//     };
 
-// // Get CARTO selection as GeoJSON and Add to Map
-// function getGeoJSON(){
-//   $.getJSON("https://"+cartoDBUserName2+".carto.com/api/v2/sql?format=GeoJSON&q="+sqlQueryAddData, function(data) {
-//     cartoDBPoints = L.geoJson(data,{
-//       pointToLayer: function(feature,latlng){
-//         var marker = L.marker(latlng);
-//         marker.bindPopup('' + feature.properties.description + ' submitted by ' + feature.properties.name + '');
-//         return L.circleMarker(latlng, geojsonMarkerOptions);
-//       },
-//     style:  {
 
-//       //this is what is styling wifi, NOT cartoCSSwifi... hmm 
-//         radius: 8,
-//         fillColor: "pink",
-//         color: "#fff",
-//         weight: 1,
-//         opacity: 1,
-//         fillOpacity: 0.8,
-//       }
-//     }).addTo(map);
-//   });
-// };
+// Write SQL Selection Query to be Used on CARTO Table
+// Name of sample table is 'data_collector', but my tables have different names
+var sqlQueryAddData = "SELECT * FROM data_collector";
 
-// // Run showAll function automatically when document loads
-// $( document ).ready(function() {
-//   getGeoJSON();
-// });
+var geojsonMarkerOptions = {
+        radius: 8,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+    };
+
+// Get CARTO selection as GeoJSON and Add to Map
+function getGeoJSON(){
+  $.getJSON("https://"+cartoDBUserName2+".carto.com/api/v2/sql?format=GeoJSON&q="+sqlQueryAddData, function(data) {
+    cartoDBPoints = L.geoJson(data,{
+      pointToLayer: function(feature,latlng){
+        //var marker = L.marker(latlng);
+        marker.bindPopup('' + feature.properties.description + ' submitted by ' + feature.properties.name + '');
+        //return L.circleMarker(latlng, geojsonMarkerOptions);
+      },
+    style:  {
+        radius: 8,
+        fillColor: "#ff7800",
+        color: "#fff",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8,
+      }
+    }).addTo(map);
+  });
+};
+
+// Run showAll function automatically when document loads
+$( document ).ready(function() {
+  getGeoJSON();
+});
 
 // Initialise the FeatureGroup to store editable layers
 var drawnItems = new L.FeatureGroup();
@@ -276,10 +260,11 @@ map.addLayer(drawnItems);
 
 
 // Create Leaflet Draw Control for the draw tools and toolbox
+//only allows points for now, might add polygon option later
 var drawControl = new L.Control.Draw({
   draw : {
     marker: true,
-    polygon : true,
+    polygon : false,
     polyline : false,
     rectangle : false,
     circle : false
@@ -367,7 +352,7 @@ function setData() {
     var enteredUsername = username.value;
     var enteredDescription = description.value;
     drawnItems.eachLayer(function (layer) {
-        var sql = "INSERT INTO data_collector (the_geom, name, description, latitude, longitude) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('";
+        var sql = "INSERT INTO data_collector (the_geom, name, description, lat, long) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('";
         var a = layer.getLatLng();
         var sql2 ='{"type":"Point","coordinates":[' + a.lng + "," + a.lat + "]}'),4326),'" + enteredDescription + "','" + enteredUsername + "','" + a.lat + "','" + a.lng +"')";
         var pURL = sql+sql2;
@@ -411,7 +396,7 @@ function startEdits(){
   controlOnMap = true;
 };
 
-// Function to remove the draw control from the map
+// Function to remove the draw controls from the map (upper left buttons)
 function stopEdits(){
   map.removeControl(drawControl);
   controlOnMap = false;
@@ -424,3 +409,8 @@ map.on('draw:created', function (e) {
   map.addLayer(drawnItems);
   dialog.dialog("open");
 });
+
+var selectedLayer;
+  // create layer selector
+  // function createSelector(layers) {
+  //   var sql = new cartodb.SQL({ user: 'documentation' });

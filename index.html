@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.9/dist/leaflet.draw.css" />
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
-  <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+  <link rel="stylesheet" type="text/css" href="css/main.css" /> 
   <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
   <!-- <link rel="stylesheet" type="text/css" href="css/leaflet.draw.css" /> -->
 
@@ -32,8 +32,8 @@
 
   <div id="form">
     <div id="text"
-    text=<p>Click on the map to find the closest recreation activities to that location,</p>
-    <p>or, click "start editing" to add your own recreation location to the map</p>
+    text=<p>Click on the map to find the closest crime to that location,</p>
+    <p>or, click "start editing" to add additional crime to the map.</p>
     </div>
     <form action="">
       <!-- <input type="button" onclick="showNone()" value="Reset Map"> -->
@@ -43,10 +43,10 @@
       <div id="dialog" title="Point Information">
         <form>
           <fieldset>
-            <label for="username">Name, please</label>
-            <input type="text" name="username" id="username" placeholder="Enter your Name" class="text ui-widget-content ui-corner-all">
-            <label for="description">What's here?</label>
-            <input type="text" name="description" id="description" placeholder="Description for this point" class="text ui-widget-content ui-corner-all">
+            <label for="username"> </label>
+            <input type="text" name="username" id="username" placeholder="Name, please" class="text ui-widget-content ui-corner-all">
+            <label for="description"> </label>
+            <input type="text" name="description" id="description" placeholder="What's here?" class="text ui-widget-content ui-corner-all">
             <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
           </fieldset>
         </form>
