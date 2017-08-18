@@ -153,19 +153,19 @@ $options.click(function(e) {
 
 });
 
-//attempt at creating a crime search
+//attempt at creating a wifi search
 $('#searchButton').click(function(){
   input = $( "#ad").val();
   var sql = new cartodb.SQL({ user: 'nrobson' });
-  sql.getBounds("SELECT * FROM crime '" + input + "'").done(function(bounds) {
+  sql.getBounds("SELECT * FROM wifi '" + input + "'").done(function(bounds) {
      map.fitBounds(bounds)
      });
    });
 
-var crimeLocations = null;
-var sqlQuery = "SELECT * FROM crime";
-//select something specific from crime
-var sqlQueryFelony = "SELECT * FROM crime WHERE law_cat_cd='FELONY'"
+var wifiLocations = null;
+var sqlQuery = "SELECT * FROM wifi";
+//select something specific from wifi
+var sqlQueryFree = "SELECT * FROM wifi WHERE type='Free'"
 var cartoDBUserName = "nrobson";
 
 // Set Global Variable that will hold your location
@@ -180,7 +180,7 @@ map.on('click', locationFound);
 // Function that will run when the location of the user is found
 function locationFound(e){
     myLocation = e.latlng;
-    closestcrime();
+    closestwifi();
     locationMarker = L.marker(e.latlng);
     map.addLayer(locationMarker);
 };
@@ -191,13 +191,13 @@ function locationNotFound(e){
 };
 
 // Function will find and load the five nearest crimes to the user location
-function closestcrime(){
+function closestwifi(){
   // Set SQL Query that will return five nearest crimes
-  var sqlQueryClosest = "SELECT * FROM crime ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint("+myLocation.lng+","+myLocation.lat+"), 4326) LIMIT 5";
+  var sqlQueryClosest = "SELECT * FROM wifi ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint("+myLocation.lng+","+myLocation.lat+"), 4326) LIMIT 1";
 
   // remove crimes if they are on the map already
-  if(map.hasLayer(crime)){
-    map.removeLayer(crime);
+  if(map.hasLayer(wifi)){
+    map.removeLayer(wifi);
   };
 
   // remove locationMarker if on map
@@ -209,7 +209,7 @@ function closestcrime(){
   $.getJSON("https://"+cartoDBUserName+".carto.com/api/v2/sql?format=GeoJSON&q="+sqlQueryClosest, function(data) {
     crimeLocations = L.geoJson(data,{
       onEachFeature: function (feature, layer) {
-        layer.bindPopup('' + feature.properties.pd_desc + ' ' + feature.properties.law_cat_cd + '');
+        layer.bindPopup('' + feature.properties.location + ' ' + feature.properties.type + '');
         layer.cartodb_id=feature.properties.cartodb_id;
       }
     }).addTo(map);
