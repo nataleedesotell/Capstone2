@@ -1,3 +1,25 @@
+
+input[id=start] {
+  color: green;
+  font-family: 'Montserrat', sans-serif;
+  background-color:white; 
+}
+
+input[id=stop] {
+  color: red;
+  font-family: 'Montserrat', sans-serif;
+  background-color:white; 
+}
+
+input[id=reset] {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  background-color:grey; 
+}
+
+
+
+
 #searchButton {
   position: fixed;
   right: 10px;
@@ -11,6 +33,7 @@
   padding-top:0;
   padding-bottom: 5px;
   }
+
 #searchBox {
   position: fixed;
   right: 70px;
