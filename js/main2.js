@@ -1,11 +1,21 @@
 // function main() {
+  // map view before we get the location
 var map = L.map('map', {
     center: L.latLng(40.779, -73.968),
     maxZoom: 17,
     minZoom: 13,
     //zoom on load
     zoom: 14
+
 });
+
+// add location control to global name space for testing only
+// on a production site, omit the "lc = "!
+lc = L.control.locate({
+    strings: {
+        title: "Show me where I am, yo!"
+    }
+}).addTo(map);
 
 var basemap = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="http://maps.stamen.com">Stamen</a>'
@@ -14,10 +24,11 @@ var basemap = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 basemap.addTo(map);
 
 //POINTS
+//will ideally use icons but styling markers for now
 var cartoCSSwifi = "#layer { "+
     "marker-width: 10;" +
-    "marker-fill: #594316;" +
-    "marker-fill-opacity: 0.9;" +
+    "marker-fill: blue;" +
+    "marker-fill-opacity: 0.5;" +
     "marker-allow-overlap: true;" +
     "marker-line-width: 1;" +
     "marker-line-color: #FFF;" +
@@ -25,10 +36,11 @@ var cartoCSSwifi = "#layer { "+
   "}"
 
 //POINTS
+//red or orange
 var cartoCSScrime = "#layer {" +
   "marker-width: 10;" +
-  "marker-fill: #FFB927;" +
-  "marker-fill-opacity: 0.9;" +
+  "marker-fill: orange;" +
+  "marker-fill-opacity: 0.5;" +
   "marker-allow-overlap: true;" +
   "marker-line-width: 1;" +
   "marker-line-color: #FFF;" +
@@ -36,16 +48,18 @@ var cartoCSScrime = "#layer {" +
 "}"
 
 //LINES
+//purple
 var cartoCSSbikeroutes = "#layer {" +
-  "line-width: 2;" +
-  "line-color: #d34dee;" +
+  "line-width: 3;" +
+  "line-color: purple;" +
   "line-opacity: 1;" +
 "}"
 
 //POLYGONS
+//green color to mimic grass
 var cartoCSSathleticfacilities = "#layer {" +
-  "polygon-fill: #d35b7b;" +
-  "polygon-opacity: 0.5;" +
+  "polygon-fill: green;" +
+  "polygon-opacity: 0.7;" +
   "line-width: 1;" +
   "line-color: #FFF;" +
   "line-opacity: 0.5;" +
