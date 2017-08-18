@@ -33,13 +33,12 @@
 
   <div id="form">
     <div id="textbox">
-   <p>Click the map to find the nearest crimes to that location <i>(data since 2012)</i>.
+   <p>Click the map to find the nearest wifi to that location <i>(data since 2012)</i>.
    </br>
-    Start an edit session to report additional information to the map.</p>
+    Start an edit session to report additional areas of interest to the map.</p>
     </div>
     <form action="">
       <input type="button" id = "reset" onclick="showNone()" value="RESET MAP">
-     <!--  LATER ideally i'd like to style these buttons better -->
       <input type="button" id = "start" onclick="startEdits()" value="START EDIT">
       <input type="button" id = "stop" onclick="stopEdits()" value="STOP EDIT">
       <div id="dialog" title="Before you leave:">
@@ -58,11 +57,11 @@
 
   <div id="layer_selector" class="cartodb-infobox">
     <ul>
-      <li id="abc" class="selected">All</li>
-      <li id="wifi">Wifi</li>  
-      <li id="crime">Crime</li> <!-- scenic points to crime... -->
-      <li id="bikeroutes">Bike Routes</li> <!-- this didn't work out, moving on... -->
-      <li id="athleticfacilities">Athletic Facilities</li><!-- this didn't work out, moving on... -->
+      <li id="abc" style="color:black">All</li>
+      <li id="wifi" style="color:blue">Wifi</li>  
+      <li id="crime" style="color:orange">Crime</li> 
+      <li id="bikeroutes" style="color:purple">Bike Routes</li>
+      <li id="athleticfacilities" style="color:green" >Athletic Facilities</li>
     </ul>
   </div>
 
