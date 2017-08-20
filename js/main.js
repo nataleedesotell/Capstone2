@@ -22,56 +22,94 @@ var basemap = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 
 basemap.addTo(map);
 
+
+
+//COLORBREWER
+//POLYGONS teal
+var cartoCSSpools ="#layer {" +
+  "polygon-fill: #1b9e77;" +
+  "polygon-opacity: 1;" +
+  "line-width: 1;" +
+  "line-color: #FFF;" +
+  "line-opacity: 0.0;" +
+"}"
+
+//POLYGONS pink
+var cartoCSSplaygrounds ="#layer {" +
+  "polygon-fill: #e7298a;" +
+  "polygon-opacity: 1;" +
+  "line-width: 1;" +
+  "line-color: #FFF;" +
+  "line-opacity: 0.0;" +
+"}"
+ 
 //POINTS
 //will ideally use icons but styling markers for now
 var cartoCSSwifi = "#layer { "+
-    "marker-width: 10;" +
-    "marker-fill: blue;" +
-    "marker-fill-opacity: 0.5;" +
+    "marker-width: 13;" +
+    "marker-fill: #7570b3;" +
+    "marker-fill-opacity: 1;" +
     "marker-allow-overlap: true;" +
     "marker-line-width: 1;" +
     "marker-line-color: #FFF;" +
-    "marker-line-opacity: 1;" +
+    "marker-line-opacity: 0.0;" +
+  "}"
+
+  //POINTS
+//will ideally use icons but styling markers for now
+var cartoCSSrestrooms = "#layer { "+
+    "marker-width: 13;" +
+    "marker-fill: #d95f02;" +
+    "marker-fill-opacity: 1;" +
+    "marker-allow-overlap: true;" +
+    "marker-line-width: 1;" +
+    "marker-line-color: #FFF;" +
+    "marker-line-opacity: 0.0;" +
   "}"
 
 //POINTS
-//red or orange
 var cartoCSScrime = "#layer {" +
-  "marker-width: 10;" +
-  "marker-fill: orange;" +
-  "marker-fill-opacity: 0.5;" +
-  "marker-allow-overlap: true;" +
+  "marker-width: 13;" +
+  "marker-fill: #e41a1c;" +
+  "marker-fill-opacity: 1;" +
+  "marker-allow-overlap: false;" +
   "marker-line-width: 1;" +
   "marker-line-color: #FFF;" +
-  "marker-line-opacity: 1;" +
+  "marker-line-opacity: 0.0;" +
 "}"
 
 //LINES
-//purple
 var cartoCSSbikeroutes = "#layer {" +
   "line-width: 3;" +
-  "line-color: purple;" +
+  "line-color: #e6ab02;" +
   "line-opacity: 1;" +
 "}"
 
 //POLYGONS
 //green color to mimic grass
 var cartoCSSathleticfacilities = "#layer {" +
-  "polygon-fill: green;" +
-  "polygon-opacity: 0.7;" +
+  "polygon-fill: #66a61e;" +
+  "polygon-opacity: 1;" +
   "line-width: 1;" +
   "line-color: #FFF;" +
-  "line-opacity: 0.5;" +
+  "line-opacity: 0.0;" +
 "}"
 
+//order should be: athleticfacilities, playgrounds, bikeroutes, crime, wifi
 
-var wifi, crime, bikeroutes, athleticfacilities
+var bikeroutes, wifi, crime, athleticfacilities, playgrounds, pools, restrooms
 
 // add cartodb layer with one layer
 cartodb.createLayer(map, {
   user_name: 'nrobson', // Required
   type: 'cartodb', // Required
   sublayers: [
+
+      { // first sublayer is the one that is painted at the bottom
+        sql: "SELECT * FROM bikeroutes", // Required
+        cartocss: cartoCSSbikeroutes, // Required
+
+     },
   { // first sublayer is the one that is painted at the bottom
       sql: "SELECT * FROM wifi", // Required
       cartocss: cartoCSSwifi, // Required
@@ -82,35 +120,62 @@ cartodb.createLayer(map, {
        cartocss: cartoCSScrime, // Required
 
     },
-    { // first sublayer is the one that is painted at the bottom
-        sql: "SELECT * FROM bikeroutes", // Required
-        cartocss: cartoCSSbikeroutes, // Required
 
-     },
       { // first sublayer is the one that is painted at the bottom
           sql: "SELECT * FROM athleticfacilities", // Required
           cartocss: cartoCSSathleticfacilities, // Required
 
        },
 
+             { // first sublayer is the one that is painted at the bottom
+          sql: "SELECT * FROM playgrounds", // Required
+          cartocss: cartoCSSplaygrounds, // Required
+
+       },
+
+             { // first sublayer is the one that is painted at the bottom
+          sql: "SELECT * FROM pools WHERE name = 'Lasker'", // Required
+          cartocss: cartoCSSpools, // Required
+
+       },
+
+           { // first sublayer is the one that is painted at the bottom
+          sql: "SELECT * FROM restrooms", // Required
+          cartocss: cartoCSSrestrooms, // Required
+
+       },
+
   ]
 }).addTo(map)
 .done(function(layer){
-wifi = layer.getSubLayer(0); // declare a layer0 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(0), ['type', 'location'])
+
+bikeroutes = layer.getSubLayer(0); // declare a layer1 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(0), ['tostreet', 'fromstreet', 'comments'])
+console.log(bikeroutes); // show in the console layer1
+
+wifi = layer.getSubLayer(1); // declare a layer0 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), ['type', 'location'])
 console.log(wifi); // show in the console layer0
 
-crime = layer.getSubLayer(1); // declare a layer1 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), ['pd_desc', 'cmplnt_fr_'])
+crime = layer.getSubLayer(2); // declare a layer1 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(2), ['pd_desc', 'cmplnt_fr_'])
 console.log(crime); // show in the console layer1
-
-bikeroutes = layer.getSubLayer(2); // declare a layer1 variable
-cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(2), ['tostreet', 'fromstreet', 'comments'])
-console.log(bikeroutes); // show in the console layer1
 
 athleticfacilities = layer.getSubLayer(3); // declare a layer1 variable
 cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(3), ['name', 'accessible'])
 console.log(athleticfacilities); // show in the console 
+
+playgrounds = layer.getSubLayer(4); // declare a layer1 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(4), [])
+console.log(playgrounds); // show in the console 
+
+pools = layer.getSubLayer(5); // declare a layer1 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(5), ['name', 'location', 'type'])
+console.log(pools); // show in the console 
+
+restrooms = layer.getSubLayer(6); // declare a layer1 variable
+cartodb.vis.Vis.addInfowindow(map, layer.getSubLayer(6), ['name', 'location', 'hours'])
+console.log(restrooms); // show in the console 
 
 var $options = $('#layer_selector li');
 $options.click(function(e) {
@@ -118,54 +183,92 @@ $options.click(function(e) {
   var $li = $(e.target);
   var legend = $li.attr('id');
   if(selectedLayer != layer ){
-    if (legend == 'wifi'){
+    if (legend == 'bikeroutes'){
       layer.getSubLayer(0).show(); // wifi
       layer.getSubLayer(1).hide(); // crime
       layer.getSubLayer(2).hide(); //bikeroutes
       layer.getSubLayer(3).hide();
+      layer.getSubLayer(4).hide();
+      layer.getSubLayer(5).hide();
+      layer.getSubLayer(6).hide();
     }
-    else if (legend == 'crime') {
+    else if (legend == 'wifi') {
       layer.getSubLayer(0).hide(); // wifi
       layer.getSubLayer(1).show(); // crime
       layer.getSubLayer(2).hide(); //bikeroutes
       layer.getSubLayer(3).hide();
+      layer.getSubLayer(4).hide();
+      layer.getSubLayer(5).hide();
+      layer.getSubLayer(6).hide();
     }
-    else if (legend == 'bikeroutes') {
+    else if (legend == 'crime') {
       layer.getSubLayer(0).hide(); // wifi
       layer.getSubLayer(1).hide(); // crime
       layer.getSubLayer(2).show();//bikeroutes
       layer.getSubLayer(3).hide();
+      layer.getSubLayer(4).hide();
+      layer.getSubLayer(5).hide();
+      layer.getSubLayer(6).hide();
     }
     else if (legend == 'athleticfacilities') {
       layer.getSubLayer(0).hide(); // wifi
       layer.getSubLayer(1).hide(); // crime
       layer.getSubLayer(2).hide();//bikeroutes
       layer.getSubLayer(3).show();
+      layer.getSubLayer(4).hide();
+      layer.getSubLayer(5).hide();
+    }
+      else if (legend == 'playgrounds') {
+      layer.getSubLayer(0).hide(); // wifi
+      layer.getSubLayer(1).hide(); // crime
+      layer.getSubLayer(2).hide();//bikeroutes
+      layer.getSubLayer(3).hide();
+      layer.getSubLayer(4).show();
+      layer.getSubLayer(6).hide();
+    }
+      else if (legend == 'pools') {
+      layer.getSubLayer(0).hide(); // wifi
+      layer.getSubLayer(1).hide(); // crime
+      layer.getSubLayer(2).hide();//bikeroutes
+      layer.getSubLayer(3).hide();
+      layer.getSubLayer(4).hide();
+      layer.getSubLayer(5).show();
+      layer.getSubLayer(6).hide();
+    }
+      else if (legend == 'restrooms') {
+      layer.getSubLayer(0).hide(); // wifi
+      layer.getSubLayer(1).hide(); // crime
+      layer.getSubLayer(2).hide();//bikeroutes
+      layer.getSubLayer(3).hide();
+      layer.getSubLayer(4).hide();
+      layer.getSubLayer(5).hide();
+      layer.getSubLayer(6).show();
     }
     else {
       layer.getSubLayer(0).show(); // wifi
       layer.getSubLayer(1).show(); // crime
       layer.getSubLayer(2).show();//bikeroutes
       layer.getSubLayer(3).show();
+      layer.getSubLayer(4).show();
+      layer.getSubLayer(5).show();
+      layer.getSubLayer(6).show();
     }
   }
 });
 
 });
 
-//attempt at creating a wifi search
+//attempt at creating a restroom search
 $('#searchButton').click(function(){
   input = $( "#ad").val();
   var sql = new cartodb.SQL({ user: 'nrobson' });
-  sql.getBounds("SELECT * FROM wifi '" + input + "'").done(function(bounds) {
+  sql.getBounds("SELECT * FROM restrooms '" + input + "'").done(function(bounds) {
      map.fitBounds(bounds)
      });
    });
 
 var wifiLocations = null;
-var sqlQuery = "SELECT * FROM wifi";
-//select something specific from wifi
-var sqlQueryFree = "SELECT * FROM wifi WHERE type='Free'"
+var sqlQuery = "SELECT * FROM restrooms";
 var cartoDBUserName = "nrobson";
 
 // Set Global Variable that will hold your location
@@ -180,7 +283,7 @@ map.on('click', locationFound);
 // Function that will run when the location of the user is found
 function locationFound(e){
     myLocation = e.latlng;
-    closestwifi();
+    closestrestrooms();
     locationMarker = L.marker(e.latlng);
     map.addLayer(locationMarker);
 };
@@ -191,13 +294,13 @@ function locationNotFound(e){
 };
 
 // Function will find and load the five nearest crimes to the user location
-function closestwifi(){
+function closestrestrooms(){
   // Set SQL Query that will return five nearest crimes
-  var sqlQueryClosest = "SELECT * FROM wifi ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint("+myLocation.lng+","+myLocation.lat+"), 4326) LIMIT 1";
+  var sqlQueryClosest = "SELECT * FROM restrooms ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint("+myLocation.lng+","+myLocation.lat+"), 4326) LIMIT 1";
 
   // remove crimes if they are on the map already
-  if(map.hasLayer(wifi)){
-    map.removeLayer(wifi);
+  if(map.hasLayer(restrooms)){
+    map.removeLayer(restrooms);
   };
 
   // remove locationMarker if on map
@@ -426,3 +529,44 @@ map.on('draw:created', function (e) {
 
 var selectedLayer;
   // create layer selector
+
+
+// //START STOP EDIT BUTTONS
+
+//   var imgObj;
+// var animate = null;
+// function init(){
+//     imgObj = document.getElementById('myImage');
+//     imgObj.style.position= 'relative';
+//     imgObj.style.left = '0px';
+// }
+
+// startStopImg = function(){{
+//   if(controlOnMap == true){
+//     map.removeControl(drawControl);
+//     controlOnMap = false;
+//   }
+//   map.addControl(drawControl);
+//   controlOnMap = true;
+//   change();
+// };
+// }
+
+// // function moveRight(){
+// // imgObj.style.left = (parseInt(imgObj.style.left) + 10) + 'px';
+// // animate = setTimeout(moveRight,50); 
+// // }
+
+// change = function(){
+// var elem = document.getElementById("startButton");
+// if (elem.value=="Stop") elem.value = "Start";
+// else elem.value = "Stop";
+// }
+
+// stop = function(){
+//     clearTimeout(animate);
+//     animate = null;
+//     stopEdits();
+
+// }
+// window.onload = init();

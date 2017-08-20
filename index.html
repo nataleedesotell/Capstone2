@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>CENTRAL PARK</title>
+  <title>central park</title>
 
 
   <style>
@@ -27,20 +27,25 @@
   <div id="map"></div>
 
   <div id='Title'>
-  CENTRAL PARK
+  central park
   </div>
 
 
   <div id="form">
     <div id="textbox">
-   <p>Click the map to find the nearest wifi to that location <i>(data since 2012)</i>.
+   <p>Click the map to find the park restroom nearest to that location.
    </br>
-    Start an edit session to report additional areas of interest to the map.</p>
+    Start an edit session to report additional areas of interest.</p>
     </div>
     <form action="">
       <input type="button" id = "reset" onclick="showNone()" value="RESET MAP">
       <input type="button" id = "start" onclick="startEdits()" value="START EDIT">
       <input type="button" id = "stop" onclick="stopEdits()" value="STOP EDIT">
+
+<!--       <div><img id="myImage" src="http://www.imageurlhost.com/images/8z26s5wwt04ersuf3wnj.jpg" /></div>
+      <input type="button" value="Start" onclick="javaScript:startStopImg()" id="startButton">
+ -->
+
       <div id="dialog" title="Before you leave:">
         <form>
           <fieldset>
@@ -55,13 +60,17 @@
     </form>
   </div>
 
+
   <div id="layer_selector" class="cartodb-infobox">
     <ul>
-      <li id="abc" style="color:black">All</li>
-      <li id="wifi" style="color:blue">Wifi</li>  
-      <li id="crime" style="color:orange">Crime</li> 
-      <li id="bikeroutes" style="color:purple">Bike Routes</li>
-      <li id="athleticfacilities" style="color:green" >Athletic Facilities</li>
+      <li id="abc" style="color:black"><b>all</b></li>
+      <li id="wifi" style="color:#7570b3"><b>wifi</b></li>  
+      <li id="restrooms" style="color:#d95f02"><b>restrooms</b></li>
+      <li id="crime" style="color:#e41a1c"><b>crimes</b></li> 
+      <li id="bikeroutes" style="color:#e6ab02"><b>bike routes</b></li>
+      <li id="athleticfacilities" style="color:#66a61e"><b>athletic facilities</b></li>
+      <li id="playgrounds" style="color:#e7298a"><b>playgrounds</b></li>
+      <li id="pools" style="color:#1b9e77"><b>pools</b></li>
     </ul>
   </div>
 
